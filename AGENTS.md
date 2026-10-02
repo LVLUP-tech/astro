@@ -152,6 +152,11 @@ Workflow:
 
 Note: `agent-browser` should be installed globally, and is not a dependency of this monorepo. If `agent-browser` isn't available on this machine, ask the user to run `npm install -g agent-browser && agent-browser install`. If you are running in headless mode with no human operator and need this tool to complete your job, it is best to fail the job vs. trying to work around not having the tool.
 
+# Cursor Cloud specific instructions
+
+- Login shells resolve `node` and `pnpm` from `/usr/local/cargo/bin`, which `~/.bashrc` prepends. That directory points at Node `24.14.0` (`.nvmrc`) and pnpm `11.13.1` (`packageManager`). Cursor also injects Node `22.14.0` later on `PATH`. Do not use that binary for tests: the test runner imports TypeScript teardown files, and Node 22.14.0 fails with `ERR_UNKNOWN_FILE_EXTENSION` because type stripping is not enabled by default.
+- Export `ASTRO_TELEMETRY_DISABLED=1` before `astro` commands so the first-run telemetry prompt does not block. `TURBO_TELEMETRY_DISABLED=1` skips the Turborepo telemetry notice during `pnpm run build`.
+
 # Deep Dives
 
 Detailed reference documents on specific subsystems. Read the relevant section before diving into a bug or feature in that area.
